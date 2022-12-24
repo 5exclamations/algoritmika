@@ -10,5 +10,5 @@ app.get("/", function (req, res) {
 });
 
 app.listen(3000, function () {
-  console.log("Farman on port 3000!");
+  console.log("Texran on port 3000!");
 });
