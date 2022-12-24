@@ -1,40 +1,29 @@
-cards = [
-  {
-    id: 0,
-    number: "2323456789",
-  },
-  {
-    id: 1,
-    number: "9953456789",
-  },
-  {
-    id: 2,
-    number: "2964456789",
-  },
-  {
-    id: 3,
-    number: "1123456789",
-  },
-  {
-    id: 4,
-    number: "4123456789",
-  },
-];
-
+const mysql = require("mysql");
 const express = require("express");
 const app = express();
 
-app.get("/card", function (req, res) {
-  res.send(cards);
+const connection = mysql.createConnection({
+  host: "localhost",
+  port: 3306,
+  user: "root",
+  password: "texran",
+  database: "task",
 });
 
-app.get("/card/:id", function (req, res) {
-  const card = JSON.stringify(cards.find((item) => item.id == req.params.id));
-  if (!card) res.status(404).send();
+connection.connect((err) => {
+  if (!err) console.log("Sucsess");
+  else console.log(err.sqlMessage);
+});
 
-  res.status(200).json(card);
+app.get("/", (req, res) => {
+  connection.query(`SELECT * FROM clients`, (err, data) => {
+    if (err) return res.status(500);
+    res.json(data);
+  });
 });
 
 app.listen(3000, function () {
   console.log("Example app listening on port 3000!");
+
+    
 });
